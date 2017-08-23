@@ -99,41 +99,55 @@ function modalClientCtrl($scope,api){
 		this.scope.showModal = false;
 		this.scope.newClientFormView = false;
 	}
-	this.saveItem - function(){
+	this.saveClient - function(){
 		if(this.scope.pass1 !== this.scope.pass2){
-
+			return;
 		}
 		else{
-			const request = {name:this.scope.clientName,pass:this.scope.pass1};	
+			const request = {
+				name:this.scope.clientName,
+				email:this.scope.email,
+				pass:this.scope.pass1
+			};	
 			const clientSavePromise = api.saveClient(request);
+			clientSavePromise.then(function(){
+				this.dismiss();
+				alert('saved');
+			})
+
 		}
 	}	
 }
 
 function modalContractCtrl($scope,api){
 	this.scope = $scope;
-
+	this.activeDay = 0;
+	this.clientList = api.getClients();
 	this.contract = {
 		'client':"",
-		'day1':"",
-		'day2':"",
-		'day3':"",
-		'stime1':"",
-		'stime2':"",
-		'stime3':"",
-		'etime1':"",
-		'etime2':"",
-		'etime3':"",
-		'details': ''
+		'id':"",
+		'days':[
+							{'day':"",'stime':"",'etime':"",'venue':"" },
+							{'day':"",'stime':"",'etime':"",'venue':"" },
+							{'day':"",'stime':"",'etime':"",'venue':"" }
+		],
+		'details': '',
+		'notes':'',
+		'price': 0.00,
+		'initPayment': 0.00,
+		'dueAmount': 0.00
 	}
 
+	this.updateDueAmount = function(){
+		this.contract.dueAmount = this.contract.price - this.contract.initPayment;
+	}
 	this.dismiss = function(){
 		this.scope.showModal = false;
 		this.scope.newContractFormView = false;
 	}
-	this.saveItem - function(){
-		//const request = {name:this.scope.contractName,pass:this.scope.pass1};	
-		//const contractSavePromise = api.saveContract(request);
+	this.saveContract = function(){
+		const request = this.contract;	
+		const contractSavePromise = api.saveContract(request);
 	}
 }
 
@@ -163,6 +177,7 @@ function createClientCtrl($scope){
 function createContractCtrl($scope,packages){
 	this.create = function(){
 		$scope.ctrl2.contract.details = packages.getPackageDetailsById($scope.cn.id);
+		$scope.ctrl2.contract.id = $scope.cn.id;
 		$scope.$parent.showModal = true;
 		$scope.$parent.newContractFormView = true;
 		$scope.$apply();
