@@ -1,5 +1,6 @@
 <div class="modalBox" ng-class='{active:newContractFormView}'>
 	<div class="container container-sm">
+<<<<<<< HEAD
 		<h3>New Client</h3>
 		<form class="form-group">
 			<input class='form-control' type="text" ng-model="clientName" placeholder="Name">
@@ -8,6 +9,92 @@
 			<div>
 				<a class='btn btn-success btn-sm'>Create Client</a>
 				<a class='btn btn-default btn-sm' ng-click='ctrl.dismiss()'>Cancel</a>
+=======
+		<h3>New Contract</h3>
+		<form class="form-group" id='contract-detail-table'>
+			<div class="clearfix">
+				<label>Client:</label>
+				<select class="form-control" ng-model='ctrl2.contract.client'>
+					<option ng-repeat="client in ctrl2.clientList track by client.id" ng-bind="client.name" ng-value="client.id"></option>
+				</select>
+			</div>
+			<div class="clearfix">
+				<label style="margin-top: 8px">Package Details:</label><br>
+				<span id='contractId' ng-bind='ctrl2.contract.id'></span>
+				<ul style="margin-bottom: 20px;">
+					<li ng-repeat='i in ctrl2.contract.details'>{{i}}</li>
+				</ul>
+			</div>
+
+			<div class="row clearfix" style="padding-bottom: 7px;">
+				<a ng-repeat='day in ctrl2.contract.days track by $index' class='days' ng-class='{active:ctrl2.activeDay == $index}' ng-click='ctrl2.activeDay=$index'>{{'Day'+($index+1)}}</a>	
+			</div>
+			<div class="clearfix day-wrapper">
+				<div ng-repeat='day in ctrl2.contract.days track by $index' class="ng-hide" ng-show="ctrl2.activeDay == $index">
+						<div class="input-group" moment-picker="day[$index].day" format="YYYY-MM-DD">
+					  		<input class="form-control" placeholder="{{'Day '+($index+1)}}" ng-model="day[$index].day">
+						</div>
+						
+						<div class="input-group"
+						     moment-picker="day[$index].stime"
+						     format="HH:mm:ss">
+						        <input class="form-control"
+						           placeholder="{{'Start time '+($index+1)}}"
+						           ng-model="day[$index].stime"
+						           ng-model-options="{ updateOn: 'blur' }">
+						</div>
+						<div class="input-group"
+						     moment-picker="day[$index].etime"
+						     format="HH:mm:ss">
+						    <input class="form-control"
+						           placeholder="{{'End time '+($index+1)}}"
+						           ng-model="day[$index].etime"
+						           ng-model-options="{ updateOn: 'blur' }">
+						</div>			
+						
+				    <textarea class="form-control" 
+				           placeholder="{{'Venue '+($index+1)}}"
+				           ng-model="day[$index].venue"
+				           ng-model-options="{ updateOn: 'blur' }"></textarea>
+				</div>
+			</div>
+			<table id='priceTable'>
+			<tr>
+				<td>
+					<label class="input-group">Price</label>
+				</td>
+				<td>
+					<input class='form-control' type="number" step=2 ng-model='ctrl2.contract.price' placeholder="Price" ng-blur='ctrl2.updateDueAmount()'/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label class="input-group">Initial Paymment</label>
+				</td>
+				<td>
+					<input class='form-control' type="number" step=2 ng-model='ctrl2.contract.initPayment' placeholder="Initial Payment" ng-blur='ctrl2.updateDueAmount()'/>
+					<input type="hidden" step=2 ng-model='ctrl2.contract.dueAmount'>
+				</td>
+			</tr>	
+			<tr>
+				<td>
+					<label class="input-group">Due Amount</label>
+				</td>
+				<td>
+					<label>${{ctrl2.contract.dueAmount}}</label>
+				</td>
+			</tr>
+							
+			</table>
+			<textarea class="form-control" 
+		           placeholder="Notes"
+		           ng-model="ctrl2.contract.notes"
+		           ng-model-options="{ updateOn: 'blur' }"
+		           style='margin: 8px 0px;'></textarea>
+			<div class='row clearfix'>
+				<a class='btn btn-success btn-sm'>Create Contract</a>
+				<a class='btn btn-default btn-sm' ng-click='ctrl2.dismiss()'>Cancel</a>
+>>>>>>> 1374f12884a3996dd02fa3be9a08c57ed1852afa
 			</div>			
 		</form>
 	</div>	

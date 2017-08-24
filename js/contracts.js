@@ -88,26 +88,62 @@ function modalClientCtrl($scope,api){
 		this.scope.showModal = false;
 		this.scope.newClientFormView = false;
 	}
+<<<<<<< HEAD
 	this.saveItem = function(){
+=======
+	this.saveClient - function(){
+>>>>>>> 1374f12884a3996dd02fa3be9a08c57ed1852afa
 		if(this.scope.pass1 !== this.scope.pass2){
-
+			return;
 		}
 		else{
-			const request = {name:this.scope.clientName,pass:this.scope.pass1};	
+			const request = {
+				name:this.scope.clientName,
+				email:this.scope.email,
+				pass:this.scope.pass1
+			};	
 			const clientSavePromise = api.saveClient(request);
+			clientSavePromise.then(function(){
+				this.dismiss();
+				alert('saved');
+			})
+
 		}
 	}	
 }
 
 function modalContractCtrl($scope,api){
 	this.scope = $scope;
+<<<<<<< HEAD
+=======
+	this.activeDay = 0;
+	this.clientList = api.getClients();
+	this.contract = {
+		'client':"",
+		'id':"",
+		'days':[
+							{'day':"",'stime':"",'etime':"",'venue':"" },
+							{'day':"",'stime':"",'etime':"",'venue':"" },
+							{'day':"",'stime':"",'etime':"",'venue':"" }
+		],
+		'details': '',
+		'notes':'',
+		'price': 0.00,
+		'initPayment': 0.00,
+		'dueAmount': 0.00
+	}
+
+	this.updateDueAmount = function(){
+		this.contract.dueAmount = this.contract.price - this.contract.initPayment;
+	}
+>>>>>>> 1374f12884a3996dd02fa3be9a08c57ed1852afa
 	this.dismiss = function(){
 		this.scope.showModal = false;
 		this.scope.newContractFormView = false;
 	}
-	this.saveItem - function(){
-		//const request = {name:this.scope.contractName,pass:this.scope.pass1};	
-		//const contractSavePromise = api.saveContract(request);
+	this.saveContract = function(){
+		const request = this.contract;	
+		const contractSavePromise = api.saveContract(request);
 	}
 }
 
@@ -136,6 +172,11 @@ function createClientCtrl($scope,$http){
 }
 function createContractCtrl($scope,$http){
 	this.create = function(){
+<<<<<<< HEAD
+=======
+		$scope.ctrl2.contract.details = packages.getPackageDetailsById($scope.cn.id);
+		$scope.ctrl2.contract.id = $scope.cn.id;
+>>>>>>> 1374f12884a3996dd02fa3be9a08c57ed1852afa
 		$scope.$parent.showModal = true;
 		$scope.$parent.newContractFormView = true;
 		$scope.$parent.$apply();
