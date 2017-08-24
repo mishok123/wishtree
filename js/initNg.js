@@ -1,1 +1,1 @@
-var app = angular.module('app',['moment-picker']);
+var app = angular.module('app',[]);

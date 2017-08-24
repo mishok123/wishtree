@@ -1,33 +1,20 @@
-app.controller('ContractsCtrl',['$scope','$http','packages','api',function($scope,$http,packages,api){
+app.controller('contractsCtrl',['$scope','$http','packages','api',function($scope,$http,packages,api){
 
 	$scope.userContracts = api.getMyContracts();
 	$scope.contractTypes = packages.getAllContractTypes();
 	$scope.showModal = false;
 	$scope.newClientFormView = false;
 	$scope.newContractFormView = false;
-}]);
-/*app.controller('ClinetFormCtrl', ['$scope','$http',function($scope,$http){
 	$scope.pass1 = "asdasdas";
 	$scope.pass2 = "1221asdasd";
-	$scope.dismiss = function(){
-		this.scope.showModal = false;
-		$scope.newClientFormView = false;	
-	}
+
 }]);
 
-app.controller('ContractFormCtrl', ['$scope','$http',function($scope,$http){
-	
-	$scope.dismiss = function(){
-		$scope.newContractFormView = false;	
-	}
-}]);
-
-*/
 app.directive('downloadContract',function(){
 	return{
 		restrict: 'A',
 		controller: DownloadCtrl,
-		controllerAs: 'ctrlDL',
+		controllerAs: 'ctrl',
 		scope:{
 			contract:"="
 		},
@@ -44,14 +31,14 @@ app.directive('createClient',function(){
 	return{
 		restrict: 'A',
 		controller: createClientCtrl,
-		controllerAs: 'ctrlClient',
+		controllerAs: 'ctrl',
 		scope:{
 			contract:"="
 		},
 		bindToController: true,
 	  link: (scope, ele, attr) => {
       ele.on('click', function(e){
-        scope.ctrlClient.create();
+        scope.ctrl.create();
       });
 	  }
 	}
@@ -62,11 +49,14 @@ app.directive('createContract',function(){
 	return{
 		restrict: 'A',
 		controller: createContractCtrl,
-		controllerAs: 'ctrlContract',
+		controllerAs: 'ctrl',
+		scope:{
+			newContract:"="
+		},
 		bindToController: true,
 	  link: (scope, ele, attr) => {
       ele.on('click', function(e){
-        scope.ctrlContract.create();
+        scope.ctrl.create();
       });
 	  }
 	}
@@ -77,7 +67,7 @@ app.directive('newClientForm',function(){
 		restrict: 'E',
 		templateUrl: '../template/newClient.html',
 		controller: modalClientCtrl,
-		controllerAs: "ctrl1"
+		controllerAs:'ctrl',
 	}
 });
 
@@ -87,8 +77,7 @@ app.directive('newContractForm',function(){
 		restrict: 'E',
 		templateUrl: '../template/newContract.html',
 		controller: modalContractCtrl,
-		controllerAs: "ctrl2",
-
+		controllerAs:'ctrl'
 	}
 });
 
@@ -99,7 +88,7 @@ function modalClientCtrl($scope,api){
 		this.scope.showModal = false;
 		this.scope.newClientFormView = false;
 	}
-	this.saveItem - function(){
+	this.saveItem = function(){
 		if(this.scope.pass1 !== this.scope.pass2){
 
 		}
@@ -112,21 +101,6 @@ function modalClientCtrl($scope,api){
 
 function modalContractCtrl($scope,api){
 	this.scope = $scope;
-
-	this.contract = {
-		'client':"",
-		'day1':"",
-		'day2':"",
-		'day3':"",
-		'stime1':"",
-		'stime2':"",
-		'stime3':"",
-		'etime1':"",
-		'etime2':"",
-		'etime3':"",
-		'details': ''
-	}
-
 	this.dismiss = function(){
 		this.scope.showModal = false;
 		this.scope.newContractFormView = false;
@@ -142,7 +116,7 @@ function modalContractCtrl($scope,api){
 function DownloadCtrl($scope,$http,api){
 	this.download = function(){
 
-		const contract = $scope.ctrlDL.contract;
+		const contract = $scope.ctrl.contract;
 		const request = {'contractId': contract.id};
 	  const promise = api.downloadPDF(request);
 
@@ -152,7 +126,7 @@ function DownloadCtrl($scope,$http,api){
 	}
 }
 
-function createClientCtrl($scope){
+function createClientCtrl($scope,$http){
 	this.create = function(){
 		$scope.$parent.showModal = true;
 		$scope.$parent.newClientFormView = true;
@@ -160,12 +134,11 @@ function createClientCtrl($scope){
 
 	}
 }
-function createContractCtrl($scope,packages){
+function createContractCtrl($scope,$http){
 	this.create = function(){
-		$scope.ctrl2.contract.details = packages.getPackageDetailsById($scope.cn.id);
 		$scope.$parent.showModal = true;
 		$scope.$parent.newContractFormView = true;
-		$scope.$apply();
+		$scope.$parent.$apply();
 	}
 
 }
