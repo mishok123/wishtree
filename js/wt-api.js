@@ -1,11 +1,10 @@
 app.service('api',function($http){
+
 	this.authenticate = function(request){
-		//console.log(request['u']);
 		return $http({
-					  	url: '../api/user/auth/validate',
-					  	method: 'POST',
-					  	dataType : "json",
-				        data: {user:request['u'],pass:request['p']},				       
+					  	url: '../auth/authenticate.php',
+					  	type: "POST",
+				      data: JSON.stringify({data:request}),
 					  });
 	}
 

@@ -1,6 +1,6 @@
-app.controller('authCtrl',['$scope','$http',function($scope,$http){
-	$scope.username = "Username";
-	$scope.password = "Password";
+app.controller('AuthCtrl',['$scope','$http',function($scope,$http){
+	$scope.username = "ABC";
+	$scope.password = "123";
 
 }]);
 
@@ -21,20 +21,13 @@ app.directive('submitButton',function(){
 
 function SubmitButtonControler($scope,$http,api){
 	this.submit = function(){
-	  const request = {'u':username.value,'p':password.value};
-	  //console.log(request);	
+		const request = {'u':username.value,'p':password.value};
+
 	  const promise = api.authenticate(request);
 
 	  promise.then(function(response){
-	  	//console.log(response.data);
 	  	const data = JSON.parse(JSON.stringify(eval(response))).data;
-         //console.log(data);
-        if(data != 'NO_USER'){
-	  		window.location = '../contracts/home.php';
-	  	}else{
-	  		alert("No User Match");
-	  		console.log(data);
-	  	}
+	  	window.location = '../contracts/home.php';
 	  });
 	}
 }
